@@ -1,0 +1,27 @@
+{
+"v1" : [
+"Gracias por la Cruz, Dios",
+"Por el precio Tú pagar",
+"Mi pecado y dolor, tu amor quitó",
+"Dando gracia eternal"
+],
+
+"v2" : [
+"Gracias por tu amor, Dios",
+"Por las manos que herí",
+"Pues tu río me limpió y siento al fin",
+"tu perdón y salvación"
+],
+
+"ch" : [
+"Digno eres, Señor, en tu trono estás",
+"Coronado con poder, Reinas con majestad",
+"Cristo, Hijo de Dios, exaltado Rey",
+"Moriste en la cruz en mi lugar",
+"Digno eres, Señor"
+],
+
+"font_size" : 15,
+"order" : ["v1", "v2", "ch"],
+"image" : "sky.jpg"
+}

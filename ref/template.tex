@@ -1,0 +1,59 @@
+\documentclass{beamer}
+\mode<presentation>{}
+\setbeamersize{text margin left=0mm,text margin right=0mm}
+
+% Required packages
+\usepackage[spanish,english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{pslatex}
+\usepackage{contour}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{transparent}
+\usepackage{forloop}
+\usetikzlibrary{backgrounds}
+
+\beamertemplatenavigationsymbolsempty
+
+% Font size, all dimmensions are scalated to this value
+%lyr_font_size
+
+% Required commands
+\def\rowh{\fsize/32}
+\newcommand\formatfont{
+	\fontsize{\fsize}{7.2}\selectfont
+}
+
+\newcommand{\blurred}[4]{
+  \transparent{#1}
+  \newcount\xend
+  \newcount\yend
+  \xend=#4
+  \yend=#4
+  \foreach \xc in {-\xend, ..., \xend}
+  \foreach \yc in {-\yend, ..., \yend} {
+  \draw[white] node at (#2*\xc/\xend,#2*\yc/\yend) {#3};
+  }
+}
+
+\newcommand{\blurry}[2]{
+\begin{scope}[shift={(0,#2)}]
+\newcount\tstep
+\def\scale{\fsize/20}
+
+\begin{scope}[on background layer]
+	\blurred{0.06}{0.02*\scale}{#1}{4}
+	\blurred{0.035}{0.05*\scale}{#1}{5}
+	\blurred{0.02}{0.10*\scale}{#1}{6}
+	\blurred{0.015}{0.15*\scale}{#1}{7}
+	\blurred{0.01}{0.20*\scale}{#1}{8}
+\end{scope}
+\transparent{1}%
+\uncover<1->{\draw [black] node at (0,0) {#1};}
+\end{scope}
+}
+
+% Pressentation format
+\begin{document}
+%lyr_text
+\end{document}
