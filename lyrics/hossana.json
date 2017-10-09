@@ -1,0 +1,31 @@
+{
+"v1" : [
+"Levantamos un clamor ",
+"por sanidad y redención",
+"Muestranos lo que Tú ves ",
+"los secretos de Tu corazón",
+"Un pueblo unido pide hoy ",
+"Tu libertad y salvación",
+"Ármanos con Tu valor ",
+"lo que deseamos es revolución",
+"",
+"Que el cielo se parta en dos, inundanos",
+"que en el desierto broten rios, vida sopla hoy"
+],
+
+"ch1" : [
+"Hossana al Rey de Salvación",
+"Hossana al Dios Altisimo",
+"Hossana, Jesucristo",
+"Jesucristo es Rey"
+],
+
+"ch2": [
+"Hossana, hossana",
+"hossana al Rey"
+],
+
+"font_size" : 12,
+"order" : ["v1", "ch1", "ch2"],
+"image" : "lake.jpg"
+}

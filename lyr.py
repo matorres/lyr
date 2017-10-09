@@ -3,13 +3,14 @@
 'lyr.py: Description of what lyr does.'
 
 __author__      = 'Marco Torres'
-__copyright__   = 'Copyright 2009, Planet Earth'
+__copyright__   = 'Copyright 2017, Marco Torres'
 
 
 # Imports
 import os
 import sys
 import json
+import itertools
 import subprocess
 from shutil import copyfile
 from optparse import OptionParser
@@ -26,11 +27,11 @@ centering='\\centering\n'
 format_font='\\formatfont\n'
 blur={'init': '\\blurry{', 'mid': '}{\\rowh*', 'end': '}\n'}
 
-
 def main():
 	# Parse input parameters
 	global usage
 	parser = OptionParser(usage)
+	parser.add_option('-l','--list', help='List file name', type='str' )
 	parser.add_option('-f','--file', help='Lyrics file name', type='str' )
 	parser.add_option('-u','--unlock_caps', help='Unlock capitals for all text', action='store_true' ,default=False)
 	parser.add_option('-m','--mute_pdf', help='Avoid pdf generation', action='store_true' ,default=False)
@@ -38,17 +39,31 @@ def main():
 	parser.add_option('--debug', help='Print debug messages', action='store_true' ,default=False)
 	(options,args) = parser.parse_args()
 
-	# Format given lyrics
-	if options.file is not None:
+	# Get list
+	if options.list:
+		l_list = lyr_get(options.list)
+		for i, song in enumerate(l_list['songs']):
+			lyrics = lyr_get('lyrics/'+song+'.json')
+			tex_file = lyr_format(lyrics, options, song)
+			if not options.mute_pdf:
+				for _ in range(2):
+					lyr_pdflatex(tex_file, options)
+				lyr_clean(tex_file)
+				lyr_resize(tex_file)
+		o_list = ['out/'+ f +'.pdf' for f in l_list['songs']]
+		lyr_merge(o_list, l_list['list_name'])
+		print('Status: Process completed {}/{}'.format(i, len(l_list['songs'])))
+	elif options.file:
 		lyrics = lyr_get(options.file)
-		tex_file = lyr_format(lyrics, options)
+		tex_file = lyr_format(lyrics, options, options.file[7:-5])
 		if not options.mute_pdf:
 			for _ in range(2):
 				lyr_pdflatex(tex_file, options)
 			lyr_clean(tex_file)
 			lyr_resize(tex_file)
-	print('Status: Process completed')
-
+	else:
+		print('Error: No list or file specified')
+		os._exit(1)
 
 def lyr_get(file_name):
 	print('Status: Parsing lyrics of {} ... '.format(file_name))
@@ -61,9 +76,9 @@ def lyr_get(file_name):
 	return lyrics
 
 
-def lyr_format(lyrics, options):
+def lyr_format(lyrics, options, song):
 	print('Status: Giving format ... ')
-	tex_file_name = 'out/'+options.file[7:-4]+'.tex'
+	tex_file_name = 'out/'+song+'.tex'
 	copyfile('ref/template.tex', tex_file_name)
 	tex_file = open(tex_file_name, 'w')
 
@@ -123,7 +138,7 @@ def lyr_format(lyrics, options):
 						dst.write(frame_syntax['init'])
 						dst.write(format_font)
 						for block_name in frame:
-							dst.write(block_syntax['init'])
+							# dst.write(block_syntax['init'])
 							dst.write(centering)
 							dst.write(tikz_syntax['init'])
 							k = len(lyrics[block_name])
@@ -137,7 +152,7 @@ def lyr_format(lyrics, options):
 															blur['end'])
 								dst.write(row)
 							dst.write(tikz_syntax['end'])
-							dst.write(block_syntax['end'])
+							# dst.write(block_syntax['end'])
 						dst.write(frame_syntax['end'])
 					dst.write(background_syntax['end'])
 				else:
@@ -185,6 +200,20 @@ def lyr_resize(filename):
 	err = p.wait()
 	if err:
 		print('Error: Resizing pdf file, {}'.format(err))
+		os._exit(1)
+	return
+
+
+def lyr_merge(file_list, file_name):
+	print('Status: Merging pdfs ... ')
+	file_name += '.pdf'
+	cmd = ['pdftk', file_list, 'cat', 'output', file_name]
+	cmd = [([x] if isinstance(x,str) else x) for x in cmd]
+	cmd = list(itertools.chain(*cmd))
+	p = subprocess.Popen(cmd)
+	err = p.wait()
+	if err:
+		print('Error: Merging pdfs, {}'.format(err))
 		os._exit(1)
 	return
 

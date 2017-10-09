@@ -1,0 +1,38 @@
+{
+"v1" : [
+"Señor, conoces Mi corazón",
+"Aun cuando Te fallo, Se que me amas",
+
+"Con tu presencia rodéame",
+"En todo tiempo, Se que me amas"
+],
+
+"ch" : [
+"Hoy me postro ante Jesús",
+"Diste Tu sangre en la cruz",
+"No hay otro amor igual",
+"El murió y resucitó",
+"Sobre la muerte venció",
+"Nada me separará"
+],
+
+"v2" : [
+"Mi escudo eres, Mi protección",
+"Tu me sostienes, Se que me amas"
+],
+
+"br" : [
+"El velo rasgó",
+"Un camino abrió",
+"Todo consumado es"
+],
+
+"v3" : [
+"Aun en tormentas o tempestad",
+"Tu estas conmigo", "Se que me amas"
+],
+
+"font_size" : 15,
+"order" : ["v1", "ch", "v2", "ch", "br", "v3"],
+"image" : "night.jpg"
+}

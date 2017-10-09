@@ -1,0 +1,37 @@
+{
+"v1" : [
+"Majestad y gloria, Rodean tu persona",
+"Autoridad y honra, Pertenecen a ti",
+"Poderosos se inclinarán",
+"Imperios personales caerán",
+"El cielo y la tierra pasarán",
+"Pero tu reino permanecerá"
+],
+
+"ch" : [
+"Y todo lo que hay en mi te adora",
+"Amado rey",
+"Quiero ministrar a tu persona",
+"Eternamente"
+],
+
+"br1": [
+"Hosanna en las alturas y gloria en la tierra"
+],
+
+"br2" : [
+"Nadie va a robar tu gloria",
+"todo viene de ti",
+"y todo vuelve a ti"
+],
+
+"br3" : [
+"tuyo es el poder",
+"tuya es la gloria",
+"por siempre amen"
+],
+
+"font_size" : 15,
+"order" : ["v1", "ch", "br1", "br2", "br3"],
+"image" : "light_bulbs.jpg"
+}

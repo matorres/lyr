@@ -1,0 +1,45 @@
+{
+"v1" : [
+"Quien como tú en la tierra oh Señor",
+"Hermoso inigualable es tu valor",
+"Y nada en este mundo saciara",
+"Jesús tu copa no se secara"
+],
+
+"ch1" : [
+"Tu Presencia es el cielo para mí"
+],
+
+"v2" : [
+"Tesoro de mi alma y corazón",
+"Me das tu gracia aunque débil soy",
+"De mis errores eres redentor",
+"De futuro eres el guardador",
+"Tu Presencia es el cielo para mí"
+],
+
+"ch2" :[
+"Y cantamos Oh Cristo, Oh Cristo-o",
+"Tu Presencia es el cielo para mí",
+"Oh Cristo, Oh Cristo ",
+"Tu presencia es el cielo para mí"
+],
+
+"v3" : [
+"Y mientras tenga vida esperare",
+"Cuando cara a cara te veré",
+"Y nada en este mundo saciara",
+"Jesús tu copa no se secara"
+],
+
+"br" : [
+"Y cantamos Oh Cristo, Oh Cristo",
+"Tu Presencia es el cielo para mí",
+"Oh Cristo, Oh Cristo ",
+"Tu presencia es el cielo para mí"
+],
+
+"font_size" : 16,
+"order" : ["v1", "ch1", "v2", "ch2", "v3", "br"],
+"image" : "mountain_2.jpg"
+}

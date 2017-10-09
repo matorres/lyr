@@ -1,0 +1,26 @@
+{
+"v1" : [
+"Espíritu del Santo Dios",
+"Ven haste presente hoy",
+"Revelanos la gloria de tu Reino"
+],
+
+"ch" : [
+"Con poder de tu gloria cubrenos",
+"vida nueva fluirá de Tí",
+"La verdad de tu Reino muestranos",
+"Con el poder de tu gloria",
+"Cubrenos"
+],
+
+"br" : [
+"No solo buscamos tener",
+"solo tu rostro ver",
+"y conocerte y poder verte",
+"revelanos tu gloria aquí"
+],
+
+"font_size" : 15,
+"order" : ["v1", "ch", "br"],
+"image" : "mountain.jpg"
+}

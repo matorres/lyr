@@ -1,0 +1,34 @@
+{
+"v1" : [
+"Manos que fueron clavadas por mí",
+"Heridas que hablan de tu inmenso amor",
+"Por eso te llamo mi Cristo, Por eso te canto"
+],
+
+"ch" : [
+"Dios del universo, salvador eterno",
+"rey de toda la creación",
+"Redentor divino, Dios a ti me rindo",
+"gloria te doy"
+],
+
+"v2" : [
+"Santo Dios, plan soberano es",
+"el enviar tu hijo por la humanidad",
+"Por eso te llamo mi Cristo, Por eso te canto"
+],
+
+"br" : [
+"Santo, santo, santo Dios"
+],
+
+"v3" : [
+"Manos que se entregaron por amor",
+"lo que soy siempre te daré, Señor",
+"Por eso te llamo mi Cristo, Por eso te canto"
+],
+
+"font_size" : 11,
+"order" : ["v1", "ch", "v2", "br", "v3"],
+"image" : "field.jpg"
+}

@@ -1,0 +1,36 @@
+{
+"v1" : [
+"Quebrantado fuiste",
+"¡Oh Jesús! por mi rebelión",
+"Resucitaste y hoy puedo vivir",
+"Y de nuevo nacer",
+"Cuanto amaste al mundo Dios",
+"Cuanto te quiero agradecer"
+],
+
+"ch" : [
+"Gloria, gloria en lo alto",
+"Gloria en lo alto, gloria al Rey",
+"Gloria, gloria a Ti mi Cristo",
+"Tu nombre por siempre exaltaré"
+],
+
+"v2": [
+"Venciste el mundo pecador",
+"Con tu gran amor",
+"Ahora el Padre te ha exaltado",
+"al más alto lugar",
+"Cuanto amaste al mundo Dios",
+"Cuanto te quiero enaltecer"
+],
+
+"br" : [
+"Digno, solo Tú eres digno",
+"Solo Tú eres digno",
+"Solo Tú eres Dios"
+],
+
+"font_size" : 14,
+"order" : ["v1", "ch", "v2", "ch", "br"],
+"image" : "lighthouse.jpg"
+}

@@ -1,0 +1,27 @@
+{
+"v1" : [
+"Aquí estoy,  humillado en tu majestad",
+"Cubierto por tu paz y Amor",
+"Aquí estoy al saber que soy pecador",
+"Me lavas con tu sangre Jesús"
+],
+
+"br" : [
+"Encontré la gracia del Amor en ti",
+"Me diste vida hoy por tu redención"
+],
+
+"ch" : [
+"Majestad, Majestad",
+"Tu gracia redimió lo que fui",
+"Me llenaste de tu paz y Amor",
+
+"Majestad, Majestad",
+"Por siempre cantaré y estaré",
+"Adorándote en tu majestad"
+],
+
+"font_size" : 14,
+"order" : ["v1", "br", "ch"],
+"image" : "beach.jpg"
+}

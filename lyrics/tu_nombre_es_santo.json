@@ -1,0 +1,18 @@
+{
+"v1" : [
+"Yo entro al lugar mas santo",
+"a travez del cordero de Dios",
+"y vengo tan solo a adorarte",
+"yo entro a honrrar a el yo soy"
+],
+
+"ch" : [
+"Dios te adoro a ti, te adoro a ti",
+"",
+"Pues tu nombre es santo, santo Dios"
+],
+
+"font_size" : 18,
+"order" : ["v1", "ch"],
+"image" : "drops.jpg"
+}
