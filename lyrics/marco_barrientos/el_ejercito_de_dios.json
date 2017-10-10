@@ -1,0 +1,16 @@
+{
+"v1" : [
+"PORQUE GRANDE ES EL SEÑOR",
+"Y PARA SIEMPRE SU MISERICORDIA"
+],
+
+"ch" : [
+"EL EJERCITO DE DIOS MARCHANDO ESTA",
+"CONTRA TODO PRINCIPADO Y POTESTAD",
+"EL EJERCITO DE DIOS MARCHANDO ESTA"
+],
+
+"font_size" : 18,
+"order" : ["v1", "ch"],
+"image" : "black.jpg"
+}

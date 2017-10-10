@@ -25,7 +25,7 @@ block_syntax={'init': '\\begin{block}{}\n', 'end': '\\end{block}\n'}
 tikz_syntax={'init': '\\begin{tikzpicture}\n', 'end': '\\end{tikzpicture}\n'}
 centering='\\centering\n'
 format_font='\\formatfont\n'
-blur={'init': '\\blurry{', 'mid': '}{\\rowh*', 'end': '}\n'}
+blur={'init': '\\blurry{', 'mid1': '}{\\rowh*', 'mid2': '}{', 'end': '}\n'}
 
 def main():
 	# Parse input parameters
@@ -50,9 +50,10 @@ def main():
 					lyr_pdflatex(tex_file, options)
 				lyr_clean(tex_file)
 				lyr_resize(tex_file)
-		o_list = ['out/'+ f +'.pdf' for f in l_list['songs']]
-		lyr_merge(o_list, l_list['list_name'])
-		print('Status: Process completed {}/{}'.format(i, len(l_list['songs'])))
+			print('Status: Process completed {}/{}'.format(i+1, len(l_list['songs'])))
+		if not options.mute_pdf:
+			o_list = [f +'.pdf' for f in l_list['songs']]
+			lyr_merge(o_list, l_list['list_name'])
 	elif options.file:
 		lyrics = lyr_get(options.file)
 		tex_file = lyr_format(lyrics, options, options.file[7:-5])
@@ -67,17 +68,22 @@ def main():
 
 def lyr_get(file_name):
 	print('Status: Parsing lyrics of {} ... '.format(file_name))
-	with open(file_name) as data_file:
-		try:
-			lyrics = json.load(data_file)
-		except Exception as err:
-			print('Error: Syntax error in {}, {}.'.format(file_name, err))
-			os._exit(1)
+	try:
+		with open(file_name) as data_file:
+			try:
+				lyrics = json.load(data_file)
+			except Exception as err:
+				print('Error: Syntax error in {}, {}.'.format(file_name, err))
+				os._exit(1)
+	except Exception as err:
+		print('Error: {}'.format(err))
+		os._exit(1)
 	return lyrics
 
 
 def lyr_format(lyrics, options, song):
 	print('Status: Giving format ... ')
+	song = song.replace("/", "_")
 	tex_file_name = 'out/'+song+'.tex'
 	copyfile('ref/template.tex', tex_file_name)
 	tex_file = open(tex_file_name, 'w')
@@ -145,11 +151,11 @@ def lyr_format(lyrics, options, song):
 							for i, row in enumerate(lyrics[block_name]):
 								if not options.unlock_caps:
 									row = row.upper()
-								if not options.draft:
-									row = '{}{}{}{}{}'.format(blur['init'],
-															row, blur['mid'],
-															k-i-1,
-															blur['end'])
+								row = '{}{}{}{}{}{}{}'.format(blur['init'],
+														row, blur['mid1'],
+														k-i-1, blur['mid2'],
+														0 if options.draft else 1,
+														blur['end'])
 								dst.write(row)
 							dst.write(tikz_syntax['end'])
 							# dst.write(block_syntax['end'])
@@ -207,6 +213,7 @@ def lyr_resize(filename):
 def lyr_merge(file_list, file_name):
 	print('Status: Merging pdfs ... ')
 	file_name += '.pdf'
+	file_list = ['out/'+song.replace("/", "_") for song in file_list]
 	cmd = ['pdftk', file_list, 'cat', 'output', file_name]
 	cmd = [([x] if isinstance(x,str) else x) for x in cmd]
 	cmd = list(itertools.chain(*cmd))

@@ -1,0 +1,25 @@
+{
+"v1" : [
+"Dios, me abro a Ti, me entrego a ti, Jesús",
+"Estoy dispuesto y en tus manos",
+"Lo rindo todo, Señor"
+],
+
+"br" : [
+"Abre mis ojos, déjame verte",
+"Quita las vendas que me han cegado",
+"Abre mis ojos, yo quiero verte",
+"Muestra tu gloria y tu gran bondad"
+],
+
+"ch" : [
+"Quiero mirar tu hermosura",
+"Y contemplar tu majestad",
+"Abre mis ojos, Jesucristo",
+"Muestra tu gloria y tu bondad"
+],
+
+"font_size" : 16,
+"order" : ["v1", "br", "ch"],
+"image" : "black.jpg"
+}

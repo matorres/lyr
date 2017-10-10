@@ -1,0 +1,23 @@
+{
+"v1" : [
+"Ni tribulaciones, ni aún la muerte",
+"Podrán separarnos del amor de Dios",
+"Ni principados, ni potestades",
+"Podrán quitar toda nuestra pasión"
+],
+
+"br" : [
+"Moriste y venciste a la muerte y al pecado,",
+"Ahora soy libre, Tú me has hecho libre"
+],
+
+"ch" : [
+"Te alabaré, en cada minuto que me des",
+"Te serviré, mientras haya aliento en mí",
+"Te exaltaré con todas mis fuerzas y mi ser"
+],
+
+"font_size" : 16,
+"order" : ["v1", "br", "ch"],
+"image" : "ocean.jpg"
+}

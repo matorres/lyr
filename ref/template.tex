@@ -36,18 +36,20 @@
   }
 }
 
-\newcommand{\blurry}[2]{
+\newcommand{\blurry}[3]{
 \begin{scope}[shift={(0,#2)}]
 \newcount\tstep
 \def\scale{\fsize/20}
 
-\begin{scope}[on background layer]
-	\blurred{0.06}{0.02*\scale}{#1}{4}
-	\blurred{0.035}{0.05*\scale}{#1}{5}
-	\blurred{0.02}{0.10*\scale}{#1}{6}
-	\blurred{0.015}{0.15*\scale}{#1}{7}
-	\blurred{0.01}{0.20*\scale}{#1}{8}
-\end{scope}
+\ifnum#3=1
+	\begin{scope}[on background layer]
+		\blurred{0.06}{0.02*\scale}{#1}{4}
+		\blurred{0.035}{0.05*\scale}{#1}{5}
+		\blurred{0.02}{0.10*\scale}{#1}{6}
+		\blurred{0.015}{0.15*\scale}{#1}{7}
+		\blurred{0.01}{0.20*\scale}{#1}{8}
+	\end{scope}
+\fi
 \transparent{1}%
 \uncover<1->{\draw [black] node at (0,0) {#1};}
 \end{scope}

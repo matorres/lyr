@@ -1,0 +1,22 @@
+{
+"v1" : [
+"Cuando yo le canto",
+"La tierra se estremece",
+"Los muros Caerán"
+],
+
+"v2" : [
+"Cuando le adoro",
+"se rompen las cadenas",
+"Los muros caerán"
+],
+
+"ch" : [
+"los muros caerán",
+"Al sonar mi cántico caerán"
+],
+
+"font_size" : 16,
+"order" : ["v1", "v2", "ch"],
+"image" : "black.jpg"
+}
