@@ -7,9 +7,8 @@ __copyright__   = 'Copyright 2017, Marco Torres'
 
 
 # Imports
-import os
-import sys
 import json
+import logging
 import itertools
 import subprocess
 from shutil import copyfile
@@ -39,18 +38,23 @@ def main():
 	parser.add_option('--debug', help='Print debug messages', action='store_true' ,default=False)
 	(options,args) = parser.parse_args()
 
+	# Set logging configuration
+	logging_level = logging.DEBUG if options.debug else logging.INFO
+	logging.basicConfig(level=logging_level)
+
 	# Get list
 	if options.list:
 		l_list = lyr_get(options.list)
 		for i, song in enumerate(l_list['songs']):
 			lyrics = lyr_get('lyrics/'+song+'.json')
-			tex_file = lyr_format(lyrics, options, song)
+			tex_file = lyr_format(lyrics, options, song, l_list['background'][i])
 			if not options.mute_pdf:
-				for _ in range(2):
+				lyr_pdflatex(tex_file, options)
+				if not options.draft:
 					lyr_pdflatex(tex_file, options)
 				lyr_clean(tex_file)
 				lyr_resize(tex_file)
-			print('Status: Process completed {}/{}'.format(i+1, len(l_list['songs'])))
+			logging.info('Process completed {}/{}'.format(i+1, len(l_list['songs'])))
 		if not options.mute_pdf:
 			o_list = [f +'.pdf' for f in l_list['songs']]
 			lyr_merge(o_list, l_list['list_name'])
@@ -58,31 +62,33 @@ def main():
 		lyrics = lyr_get(options.file)
 		tex_file = lyr_format(lyrics, options, options.file[7:-5])
 		if not options.mute_pdf:
-			for _ in range(2):
+			lyr_pdflatex(tex_file, options)
+			if not options.draft:
 				lyr_pdflatex(tex_file, options)
 			lyr_clean(tex_file)
 			lyr_resize(tex_file)
 	else:
-		print('Error: No list or file specified')
-		os._exit(1)
+		logging.error('No list or file specified')
+		raise
 
 def lyr_get(file_name):
-	print('Status: Parsing lyrics of {} ... '.format(file_name))
+
+	logging.info('Parsing lyrics from {} ... '.format(file_name))
 	try:
 		with open(file_name) as data_file:
 			try:
 				lyrics = json.load(data_file)
 			except Exception as err:
-				print('Error: Syntax error in {}, {}.'.format(file_name, err))
-				os._exit(1)
+				logging.error('Syntax error in {}, {}.'.format(file_name, err))
+				raise(err)
 	except Exception as err:
-		print('Error: {}'.format(err))
-		os._exit(1)
+		logging.error(err)
+		raise(err)
 	return lyrics
 
 
-def lyr_format(lyrics, options, song):
-	print('Status: Giving format ... ')
+def lyr_format(lyrics, options, song, background=None):
+	logging.info('Giving format ... ')
 	song = song.replace("/", "_")
 	tex_file_name = 'out/'+song+'.tex'
 	copyfile('ref/template.tex', tex_file_name)
@@ -92,20 +98,18 @@ def lyr_format(lyrics, options, song):
 	frames = []
 	frame = []
 	rows_per_frame = int(200 / int(lyrics['font_size']))
-	if options.debug:
-		print('Debug: Rows per frame = {}'.format(rows_per_frame))
+	logging.debug('Rows per frame = {}'.format(rows_per_frame))
 	available_rows = rows_per_frame
 
 	for block_index, block_name in enumerate(lyrics['order']):
 
 		# Define block length
 		block_len = len(lyrics[block_name])
-		if options.debug:
-			print('Debug: Rows of {} = {}.'.format(block_name, block_len))
-			print('Debug: Available rows in frame = {}.'.format(available_rows))
+		logging.debug('Rows of {} = {}.'.format(block_name, block_len))
+		logging.debug('Available rows in frame = {}.'.format(available_rows))
 		if block_len > rows_per_frame:
 			# TODO: Split block
-			print('Error: Font is too large, define a smaller.')
+			logging.Error('Font is too large, define a smaller.')
 			return
 
 		# Allocate blocks in frames
@@ -113,21 +117,18 @@ def lyr_format(lyrics, options, song):
 			if available_rows >= block_len:
 				frame.append(block_name)
 				available_rows -= block_len
-				if options.debug:
-					print('Debug: Frame = {}.'.format(frame))
+				logging.debug('Frame = {}.'.format(frame))
 				break
 			else:
 				frames.append(frame[:])
 				frame = []
 				available_rows = rows_per_frame
-				if options.debug:
-					print('Debug: End of frame.\n')
+				logging.debug('End of frame.')
 
 	if len(frame) != 0:
 		frames.append(frame[:])
-		if options.debug:
-			print('Debug: End of frame.\n')
-			print('Debug: Frames = {}.\n'.format(frames))
+		logging.debug('End of frame.')
+		logging.debug('Frames = {}.'.format(frames))
 
 	with open('ref/template.tex') as src:
 		with open(tex_file_name, 'w') as dst:
@@ -137,14 +138,16 @@ def lyr_format(lyrics, options, song):
 											  lyrics['font_size'],
 											  font_syntax['end']))
 				elif '%lyr_text' in line:
-					dst.write('{}{}{}'.format(background_syntax['init'],
-											  lyrics['image'],
-											  background_syntax['mid']))
+					if not options.draft:
+						background = lyrics['image'] if background is None else background
+						dst.write('{}{}{}'.format(background_syntax['init'],
+												  background,
+												  background_syntax['mid']))
 					for frame in frames:
 						dst.write(frame_syntax['init'])
 						dst.write(format_font)
 						for block_name in frame:
-							# dst.write(block_syntax['init'])
+							dst.write(block_syntax['init'])
 							dst.write(centering)
 							dst.write(tikz_syntax['init'])
 							k = len(lyrics[block_name])
@@ -153,14 +156,15 @@ def lyr_format(lyrics, options, song):
 									row = row.upper()
 								row = '{}{}{}{}{}{}{}'.format(blur['init'],
 														row, blur['mid1'],
-														k-i-1, blur['mid2'],
+														(k-i-1), blur['mid2'],
 														0 if options.draft else 1,
 														blur['end'])
 								dst.write(row)
 							dst.write(tikz_syntax['end'])
-							# dst.write(block_syntax['end'])
+							dst.write(block_syntax['end'])
 						dst.write(frame_syntax['end'])
-					dst.write(background_syntax['end'])
+					if not options.draft:
+						dst.write(background_syntax['end'])
 				else:
 					dst.write(line)
 			return tex_file_name
@@ -168,18 +172,16 @@ def lyr_format(lyrics, options, song):
 
 def lyr_pdflatex(filename, options):
 	texfile = filename[4:]
-	print('Status: Generating pdf file ... ')
+	logging.info('Generating pdf file ... ')
 	logname = filename[:-4]+'_lyr.log'
 	logfile = open(logname, 'w')
 	cmd = ['pdflatex', '-interaction=nonstopmode', texfile]
-	if options.debug:
-		p = subprocess.Popen(cmd, cwd='out')
-	else:
-		p = subprocess.Popen(cmd, cwd='out', stdout=logfile)
+	stdout = None if options.debug else logfile
+	p = subprocess.Popen(cmd, cwd='out', stdout=stdout)
 	err = p.wait()
 	if err:
-		print('Error: PDF generation error, {}'.format(err))
-		os._exit(1)
+		logging.error('PDF generation error, {}'.format(err))
+		raise(err)
 	logfile.flush()
 	return
 
@@ -187,31 +189,31 @@ def lyr_pdflatex(filename, options):
 def lyr_clean(filename):
 	texfile = filename[4:-4]
 	extensions = ['.aux', '.log', '_lyr.log', '.snm', '.toc', '.nav', '.out', '.tex']
-	print('Status: Cleaning tmp files ... ')
+	logging.info('Cleaning tmp files ... ')
 	for ext in extensions:
 		cmd = ['rm', texfile+ext]
 		p = subprocess.Popen(cmd, cwd='out')
 		err = p.wait()
 		if err:
-			print('Error: Cleaning tmp files, {}'.format(err))
-			os._exit(1)
+			logging.error('Cleaning tmp files, {}'.format(err))
+			raise(err)
 	return
 
 
 def lyr_resize(filename):
 	texfile = filename[4:-4]+'.pdf'
-	print('Status: Resizing pdf ... ')
+	logging.info('Resizing pdf ... ')
 	cmd = ['convert', '-density', '600x600', '-quality', '100', '-compress', 'jpeg', texfile, texfile]
 	p = subprocess.Popen(cmd, cwd='out')
 	err = p.wait()
 	if err:
-		print('Error: Resizing pdf file, {}'.format(err))
-		os._exit(1)
+		logging.error('Resizing pdf file, {}'.format(err))
+		raise(err)
 	return
 
 
 def lyr_merge(file_list, file_name):
-	print('Status: Merging pdfs ... ')
+	logging.info('Merging pdfs ... ')
 	file_name += '.pdf'
 	file_list = ['out/'+song.replace("/", "_") for song in file_list]
 	cmd = ['pdftk', file_list, 'cat', 'output', file_name]
@@ -220,8 +222,8 @@ def lyr_merge(file_list, file_name):
 	p = subprocess.Popen(cmd)
 	err = p.wait()
 	if err:
-		print('Error: Merging pdfs, {}'.format(err))
-		os._exit(1)
+		logging.error('Merging pdfs, {}'.format(err))
+		raise(err)
 	return
 
 
